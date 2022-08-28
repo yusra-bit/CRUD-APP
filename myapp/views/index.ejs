@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   
+
+    <title>ReadingList</title>
+</head>
+
+<body>
+    <%- include('partials/header') -%>
+
+      <h2 class="text-center text-pink-900 text-2xl font-bold pt-16 pb-8">My Reading List</h2>
+      <div class="">
+  
+        <form action="/" method="POST" class="flex flex-col md:px-64 px-16 ">
+          <input class="p-2 mb-2 border rounded-md border-pink-900 font-light	" type="text" name="enterTitle" placeholder="Enter Book name" required>
+          <input class="p-2 mb-2 border rounded-md border-pink-900 font-light" type="text" name="enterAuthor" placeholder="Enter Author name" required>
+          <input class="p-2 mb-2 border rounded-md border-pink-900 font-light" type="text" name="enterAuthor" placeholder="Enter Your Favourite Quote from the book (optinal)" required>
+
+        <select class="p-2 mb-2 border rounded-md border-pink-900 font-light" name="enterRating" id="enterRating" placeholder="Select your rating">
+            <option value="" name="">Select your rating</option>
+            <option value="⭐⭐⭐⭐⭐" name="5stars">⭐⭐⭐⭐⭐</option>
+            <option value="⭐⭐⭐⭐" name="4stars">⭐⭐⭐⭐</option>
+            <option value="⭐⭐⭐" name="3stars" >⭐⭐⭐</option>
+            <option value="⭐⭐" name="2stars">⭐⭐</option>
+            <option value="⭐" name="1star">⭐</option>
+          </select>
+          <input class=" p-2 bg-pink-100  rounded-md"  type="submit" name ='button' value="Submit">
+        </form>
+          
+      </div>
+</body>
+</html>

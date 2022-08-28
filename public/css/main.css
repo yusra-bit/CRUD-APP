@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root{
+  --heading:#155e75;
+  --btn-color:#0891b2;
+  
+}
+body{
+  font-family:poppins;
+}
+h2{
+  text-align:center;
+  color:var(--heading);
+}
+form,select{
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  
+
+}
+input[type='text'], select{
+  width:50%;
+  margin:10px;
+  padding:10px;
+  border:none;
+  border:2px solid var(--heading);
+  border-radius:20px;
+  font-size:15px;
+  
+}
+
+input[type='submit']{
+  border:none;
+  padding:15px 20px;
+  border-radius:10px;
+  color:white;
+  background-color:var(--btn-color);
+}
