@@ -3,7 +3,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const passportLocalMongoose = require("passport-local-mongoose");
+const session = require('express-session')
 
+const Users = require('./modals/Users');
 
 
 //mongoose connection
@@ -12,13 +17,26 @@ const mongoose = require('mongoose');
  }, 
  e => console.error(e));
   
+
 const app = express();
+
 
 app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(session({
+    secret: 'hello, world',
+    resave: false,
+    saveUninitialized: false
+  }))
 
+app.use(passport.initialize());
+app.use(passport.session());
+ 
+passport.use(new LocalStrategy(Users.authenticate()));
+passport.serializeUser(Users.serializeUser());
+passport.deserializeUser(Users.deserializeUser());
 
 /*create Schemea*/
 const listSchema = {
@@ -28,18 +46,59 @@ const listSchema = {
   rating: String
 };
 
+
+  
 //new mongoose model
 const List = mongoose.model("List", listSchema);
 
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
-app.get('/login', (req, res) => {
 
-        res.render("login")
-
+app.get('/signup', (req, res) => {
+    res.render("signup")
 });
+
+app.post('/signup', (req, res) => {
+    const users = new Users ({
+        username: req.body.enterUsername,
+        email: req.body.enterEmail,
+        password: req.body.enterPass
+    });
+        
+
+    users.save(function(err){
+        if(!err){
+            res.redirect('/signup')
+            console.log('new user created');
+        }
+});
+});
+
+
+
+
+app.get("/", function (req, res) {
+    res.render('login')
+    });
+
+    app.post('/', (req, res) => {
+       const email = req.body.enterEmail;
+       const password = req.body.enterPass;
+       const username = req.body.enterUsername;
+
+
+       Users.findOne({ email: username}, function(err, foundUser){
+           if (err) {
+               console.log(err);
+           } else {
+              
+                       res.render('add')
+                   }
+       })
+    });
+    
+     
+   
+
 
 app.get("/display", function(req, res){
     List.find({}, function(err, lists){
@@ -62,8 +121,14 @@ app.get('/delete/:id', function(req, res, ) {
     }
     });
     })
-  
-app.post('/', (req,res) => {
+
+
+    app.get("/add", function (req, res) {
+        res.render('add')
+        });
+    
+
+app.post('/add', (req,res) => {
     
     const list = new List ({
         title: req.body.enterTitle,
@@ -74,7 +139,7 @@ app.post('/', (req,res) => {
 
     list.save(function(err){
         if(!err){
-            res.redirect('/')
+            res.render("add")
         }
     });
     
